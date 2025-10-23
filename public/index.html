@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mini Spotify</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    audio { width: 300px; margin-top: 20px; }
+    button { padding: 5px 15px; margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <h2>🎵 Mini Spotify (Audio Only) 🎵</h2>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" id="song" name="song" accept="audio/*" required>
+    <button type="submit">Upload Song</button>
+  </form>
+
+  <div id="player"></div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const player = document.getElementById('player');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch('/upload', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.url) {
+          player.innerHTML = `
+            <p>Uploaded Successfully!</p>
+            <audio controls autoplay src="${data.url}"></audio>
+          `;
+          const audio = player.querySelector('audio');
+          audio.play().catch(() => console.log("Autoplay blocked, click play manually."));
+        } else {
+          alert("Upload failed!");
+        }
+      } catch (err) {
+        console.log(err);
+        alert("Error uploading file.");
+      }
+    });
+  </script>
+</body>
+</html>
