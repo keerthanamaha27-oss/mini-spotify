@@ -1,4 +1,4 @@
-// Load dotenv from .env explicitly
+// Load dotenv from .env
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 
@@ -10,13 +10,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Verify dotenv loaded correctly
-console.log("Cloud Name:", process.env.CLOUD_NAME);
-console.log("API Key:", process.env.API_KEY);
-console.log("API Secret:", process.env.API_SECRET);
-
 // Serve frontend
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 // Configure Cloudinary
 cloudinary.config({
@@ -37,30 +33,37 @@ const upload = multer({
   }
 });
 
+// In-memory array to store uploaded songs
+let songs = [];
+
 // Upload route
 app.post('/upload', upload.single('song'), (req, res) => {
-  try {
-    const file = req.file;
-    if (!file) return res.status(400).json({ error: "No file uploaded" });
+  const file = req.file;
+  if (!file) return res.status(400).json({ error: "No file uploaded" });
 
-    const stream = cloudinary.uploader.upload_stream(
-      { resource_type: 'video', folder: 'songs' }, // 'video' allows audio
-      (error, result) => {
-        if (error) {
-          console.log("Cloudinary Upload Error:", error);
-          return res.status(500).json({ error: error.message });
-        }
-        console.log("Uploaded URL:", result.secure_url);
-        res.json({ url: result.secure_url });
-      }
-    );
+  const stream = cloudinary.uploader.upload_stream(
+    { resource_type: 'video', folder: 'songs' }, // video type allows audio
+    (error, result) => {
+      if (error) return res.status(500).json({ error: error.message });
 
-    stream.end(file.buffer);
-  } catch (err) {
-    console.log("Server Error:", err);
-    res.status(500).json({ message: err.message });
-  }
+      // Add song to array with metadata
+      songs.unshift({
+        name: file.originalname,
+        size: (file.size / 1024).toFixed(2) + ' KB',
+        url: result.secure_url,
+        date: new Date().toLocaleString()
+      });
+
+      res.json({ songs });
+    }
+  );
+
+  stream.end(file.buffer);
 });
 
-// Start server
+// Route to get all songs
+app.get('/songs', (req, res) => {
+  res.json({ songs });
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
