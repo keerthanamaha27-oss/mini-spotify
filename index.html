@@ -82,53 +82,70 @@ a:hover {
 <ul id="songList"></ul>
 
 <script>
-    // 🔹 Replace this with your Render URL
-    const RENDER_URL = "https://mini-spotify1.onrender.com";
+const RENDER_URL = "https://mini-spotify1-8.onrender.com"; // Replace with your Render URL
 
-    async function uploadSong() {
-        const fileInput = document.getElementById("fileInput");
-        if (!fileInput.files[0]) {
-            alert("Please select a file!");
+// Function to upload a song
+async function uploadSong() {
+    const fileInput = document.getElementById("fileInput");
+    if (!fileInput.files[0]) {
+        alert("Please select a file!");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    try {
+        const response = await fetch(`${RENDER_URL}/upload`, {
+            method: 'POST',
+            body: formData
+        });
+
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch {
+            console.error("Server returned HTML instead of JSON:", text);
+            alert("❌ Upload failed: Server returned HTML instead of JSON");
             return;
         }
 
-        const formData = new FormData();
-        formData.append("file", fileInput.files[0]);
-
-        try {
-            const response = await fetch(`${RENDER_URL}/upload`, {
-                method: 'POST',
-                body: formData
-            });
-
-            const text = await response.text();
-
-            // Check if response is JSON
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch {
-                console.error("Server returned HTML instead of JSON:", text);
-                alert("❌ Upload failed: Server returned HTML instead of JSON");
-                return;
-            }
-
-            if (!response.ok) {
-                alert("❌ " + data.error);
-                return;
-            }
-
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <audio controls src="${data.secure_url}"></audio>
-                <a href="${data.secure_url}" target="_blank">${fileInput.files[0].name}</a>
-            `;
-            document.getElementById("songList").appendChild(li);
-            alert("✅ Upload successful!");
-        } catch (err) {
-            alert("Upload failed: " + err.message);
+        if (!response.ok) {
+            alert("❌ " + data.error);
+            return;
         }
+
+        addSongToList(data.secure_url, fileInput.files[0].name);
+        alert("✅ Upload successful!");
+    } catch (err) {
+        alert("Upload failed: " + err.message);
     }
+}
+
+// Function to add song to the HTML list
+function addSongToList(url, name) {
+    const li = document.createElement("li");
+    li.innerHTML = `
+        <audio controls src="${url}"></audio>
+        <a href="${url}" target="_blank">${name}</a>
+    `;
+    document.getElementById("songList").appendChild(li);
+}
+
+// Load all uploaded songs on page load
+async function loadPlaylist() {
+    try {
+        const response = await fetch(`${RENDER_URL}/songs`);
+        const songs = await response.json();
+        songs.forEach(song => addSongToList(song.url, song.name));
+    } catch (err) {
+        console.error("Failed to load playlist:", err);
+    }
+}
+
+// Initialize
+window.onload = loadPlaylist;
 </script>
 
 </body>
