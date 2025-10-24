@@ -82,7 +82,7 @@
 <ul id="songList"></ul>
 
 <script>
-    const RENDER_URL = "https://mini-spotify1.onrender.com"; // Replace with your Render URL
+    const RENDER_URL = "https://mini-spotify1.onrender.com"; // Replace with your live Render URL
 
     async function uploadSong() {
         const fileInput = document.getElementById("fileInput");
@@ -100,7 +100,7 @@
                 body: formData
             });
 
-            // Check content-type
+            // Check if JSON
             const contentType = response.headers.get("content-type");
             if (!contentType || !contentType.includes("application/json")) {
                 const text = await response.text();
