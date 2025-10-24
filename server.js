@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Upload route (no admin)
+// Upload route (returns JSON)
 app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
@@ -31,9 +31,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
         { resource_type: 'video' },
         (error, result) => {
             if (error) return res.status(500).json({ error });
-            res.json(result);
+            res.json(result); // JSON response
         }
     );
+
     stream.end(req.file.buffer);
 });
 

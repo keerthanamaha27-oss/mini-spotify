@@ -72,6 +72,7 @@ async function uploadSong() {
     formData.append("file", fileInput.files[0]);
 
     try {
+        // Use your full Render URL here
         const response = await fetch('https://mini-spotify1.onrender.com/upload', {
             method: 'POST',
             body: formData
