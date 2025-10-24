@@ -22,131 +22,28 @@ body {
     transition: background 0.5s, color 0.5s;
     padding-bottom: 120px;
 }
-h1 {
-    margin-top: 30px;
-    font-size: 3rem;
-    transition: color 0.5s;
-}
-#themeToggle {
-    margin: 10px;
-    padding: 8px 15px;
-    border-radius: 25px;
-    border: none;
-    cursor: pointer;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    transition: background 0.3s, color 0.3s;
-}
-#themeToggle:hover {
-    background: rgba(255,255,255,0.4);
-}
-#searchBar {
-    margin-top: 10px;
-    padding: 10px 15px;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 25px;
-    border: none;
-    font-size: 16px;
-    outline: none;
-}
-#uploadArea {
-    margin-top: 20px;
-    padding: 20px;
-    border: 2px dashed rgba(255,255,255,0.5);
-    border-radius: 15px;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-    transition: background 0.3s;
-}
-#uploadArea.dragover {
-    background: rgba(255,255,255,0.1);
-}
-#songList {
-    list-style: none;
-    padding: 0;
-    margin-top: 30px;
-    width: 80%;
-    max-width: 800px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-li.card {
-    background-color: rgba(255,255,255,0.1);
-    padding: 15px;
-    border-radius: 15px;
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s, box-shadow 0.3s, background-color 0.5s;
-    cursor: pointer;
-}
-li.card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-}
-audio {
-    width: 100%;
-    margin-top: 10px;
-}
-.album-art {
-    width: 100%;
-    height: 100px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    object-fit: cover;
-    transition: transform 0.3s;
-}
-li.card:hover .album-art {
-    transform: scale(1.05);
-}
-a {
-    color: #1DB954;
-    text-decoration: none;
-    margin-top: 5px;
-    font-weight: bold;
-}
-a:hover { text-decoration: underline; }
-
-/* Now Playing Bar */
-#nowPlaying {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(25,25,25,0.95);
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    gap: 15px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-    transition: background 0.5s;
-}
-#nowPlaying img {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    object-fit: cover;
-}
-#nowPlaying span {
-    font-size: 16px;
-    color: white;
-}
-
-/* Light mode adjustments */
-body.light {
-    background: var(--bg-light);
-    color: var(--text-light);
-}
-body.light h1 { color: var(--text-light); }
+h1 { margin-top: 30px; font-size: 3rem; }
+#themeToggle { margin:10px;padding:8px 15px;border-radius:25px;border:none;cursor:pointer;background:rgba(255,255,255,0.2);color:white;transition:0.3s; }
+#themeToggle:hover { background: rgba(255,255,255,0.4); }
+#searchBar { margin-top:10px;padding:10px 15px;width:80%;max-width:400px;border-radius:25px;border:none;font-size:16px;outline:none; }
+#uploadArea { margin-top:20px;padding:20px;border:2px dashed rgba(255,255,255,0.5);border-radius:15px;width:80%;max-width:600px;text-align:center;transition:background 0.3s; }
+#uploadArea.dragover { background: rgba(255,255,255,0.1); }
+#songList { list-style:none;padding:0;margin-top:30px;width:80%;max-width:800px;display:flex;flex-wrap:wrap;gap:20px;justify-content:center; }
+li.card { background-color: rgba(255,255,255,0.1); padding:15px; border-radius:15px; width:180px; display:flex; flex-direction:column; align-items:center; transition: transform 0.3s, box-shadow 0.3s; cursor:pointer; }
+li.card:hover { transform: translateY(-5px) scale(1.02); box-shadow:0 10px 20px rgba(0,0,0,0.5); }
+audio { width:100%; margin-top:10px; }
+.album-art { width:100%; height:100px; border-radius:10px; margin-bottom:10px; object-fit:cover; transition:transform 0.3s; }
+li.card:hover .album-art { transform:scale(1.05); }
+a { color:#1DB954; text-decoration:none; margin-top:5px; font-weight:bold; }
+a:hover { text-decoration:underline; }
+#nowPlaying { position: fixed; bottom:0; left:0; width:100%; background: rgba(25,25,25,0.95); display:flex; align-items:center; padding:10px 20px; gap:15px; box-shadow:0 -2px 10px rgba(0,0,0,0.5); }
+#nowPlaying img { width:50px;height:50px;border-radius:8px;object-fit:cover; }
+#nowPlaying span { font-size:16px;color:white; }
+body.light { background: var(--bg-light); color: var(--text-light); }
 body.light li.card { background-color: rgba(0,0,0,0.05); }
 body.light #nowPlaying { background: rgba(240,240,240,0.95); }
-body.light a { color: #1DB954; }
-body.light #themeToggle { color: #333; background: rgba(0,0,0,0.1); }
+body.light a { color:#1DB954; }
+body.light #themeToggle { color:#333; background: rgba(0,0,0,0.1); }
 body.light #themeToggle:hover { background: rgba(0,0,0,0.2); }
 </style>
 </head>
@@ -164,14 +61,13 @@ body.light #themeToggle:hover { background: rgba(0,0,0,0.2); }
 
 <ul id="songList"></ul>
 
-<!-- Now Playing Bar -->
 <div id="nowPlaying" style="display:none;">
     <img id="npArt" src="" alt="Album Art">
     <span id="npName"></span>
 </div>
 
 <script>
-const RENDER_URL = "https://mini-spotify1-8.onrender.com"; // Replace with your Render URL
+const RENDER_URL = "https://mini-spotify-1-nten.onrender.com"; // Your live Render URL
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('fileInput');
 const searchBar = document.getElementById('searchBar');
@@ -181,91 +77,73 @@ const npName = document.getElementById('npName');
 const themeToggle = document.getElementById('themeToggle');
 
 let allSongs = [];
-
-// Sample random album art images
 const albumArts = [
     "https://picsum.photos/200/200?random=1",
     "https://picsum.photos/200/200?random=2",
     "https://picsum.photos/200/200?random=3",
     "https://picsum.photos/200/200?random=4",
-    "https://picsum.photos/200/200?random=5",
+    "https://picsum.photos/200/200?random=5"
 ];
 
-// Theme toggle
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-});
+themeToggle.addEventListener('click', ()=>{document.body.classList.toggle('light');});
 
-// Drag & Drop
-uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
-uploadArea.addEventListener('dragleave', e => { e.preventDefault(); uploadArea.classList.remove('dragover'); });
-uploadArea.addEventListener('drop', e => { e.preventDefault(); uploadArea.classList.remove('dragover'); if(e.dataTransfer.files[0]) uploadSongFile(e.dataTransfer.files[0]); });
+// Drag & drop
+uploadArea.addEventListener('dragover', e=>{e.preventDefault(); uploadArea.classList.add('dragover');});
+uploadArea.addEventListener('dragleave', e=>{e.preventDefault(); uploadArea.classList.remove('dragover');});
+uploadArea.addEventListener('drop', e=>{e.preventDefault(); uploadArea.classList.remove('dragover'); if(e.dataTransfer.files[0]) uploadSongFile(e.dataTransfer.files[0]);});
 
-// File input
-fileInput.addEventListener('change', () => { if(fileInput.files[0]) uploadSongFile(fileInput.files[0]); });
+fileInput.addEventListener('change', ()=>{if(fileInput.files[0]) uploadSongFile(fileInput.files[0]);});
 
-// Upload function
-async function uploadSongFile(file) {
+async function uploadSongFile(file){
     const formData = new FormData();
     formData.append("file", file);
-
-    try {
-        const response = await fetch(`${RENDER_URL}/upload`, { method:'POST', body: formData });
+    try{
+        const response = await fetch(`${RENDER_URL}/upload`, {method:'POST', body:formData});
         const text = await response.text();
         let data;
-        try { data = JSON.parse(text); } catch { alert("❌ Server returned HTML instead of JSON"); return; }
-        if(!response.ok) { alert("❌ "+data.error); return; }
-
+        try{ data=JSON.parse(text); } catch{ alert("❌ Server returned HTML instead of JSON"); return; }
+        if(!response.ok){ alert("❌ "+data.error); return; }
         addSongToList(data.secure_url, file.name);
         allSongs.push({url:data.secure_url, name:file.name});
         alert("✅ Upload successful!");
-    } catch(err) {
-        alert("Upload failed: "+err.message);
-    }
+    }catch(err){ alert("Upload failed: "+err.message); }
 }
 
-// Add song card
-function addSongToList(url, name) {
-    const li = document.createElement("li");
-    li.className = "card";
-    const randomArt = albumArts[Math.floor(Math.random()*albumArts.length)];
-    li.innerHTML = `
-        <img class="album-art" src="${randomArt}" alt="Album Art">
-        <audio controls src="${url}"></audio>
-        <a href="${url}" target="_blank">${name}</a>
-    `;
+function addSongToList(url,name){
+    const li=document.createElement("li");
+    li.className="card";
+    const randomArt=albumArts[Math.floor(Math.random()*albumArts.length)];
+    li.innerHTML=`<img class="album-art" src="${randomArt}" alt="Album Art">
+                    <audio controls src="${url}"></audio>
+                    <a href="${url}" target="_blank">${name}</a>`;
     document.getElementById("songList").appendChild(li);
 
-    // Play in Now Playing
-    const audioEl = li.querySelector("audio");
-    audioEl.addEventListener('play', () => {
-        nowPlaying.style.display = 'flex';
-        npArt.src = randomArt;
-        npName.textContent = name;
-        // Pause all other audios
-        document.querySelectorAll("audio").forEach(a => { if(a !== audioEl) a.pause(); });
+    const audioEl=li.querySelector("audio");
+    audioEl.addEventListener('play', ()=>{
+        nowPlaying.style.display='flex';
+        npArt.src=randomArt;
+        npName.textContent=name;
+        document.querySelectorAll("audio").forEach(a=>{if(a!==audioEl) a.pause();});
     });
 }
 
-// Load playlist
-async function loadPlaylist() {
-    try {
+async function loadPlaylist(){
+    try{
         const response = await fetch(`${RENDER_URL}/songs`);
         const songs = await response.json();
         allSongs = songs;
-        songs.forEach(song => addSongToList(song.url, song.name));
-    } catch(err) { console.error("Failed to load playlist:", err); }
+        songs.forEach(song=>addSongToList(song.url,song.name));
+    }catch(err){ console.error("Failed to load playlist:", err); }
 }
 
-// Search filter
-searchBar.addEventListener('input', () => {
-    const query = searchBar.value.toLowerCase();
-    document.getElementById('songList').innerHTML = '';
-    allSongs.filter(song => song.name.toLowerCase().includes(query))
-            .forEach(song => addSongToList(song.url, song.name));
+searchBar.addEventListener('input', ()=>{
+    const query=searchBar.value.toLowerCase();
+    document.getElementById('songList').innerHTML='';
+    allSongs.filter(song=>song.name.toLowerCase().includes(query))
+            .forEach(song=>addSongToList(song.url,song.name));
 });
 
-window.onload = loadPlaylist;
+window.onload=loadPlaylist;
 </script>
 
 </body>
