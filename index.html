@@ -4,72 +4,72 @@
 <meta charset="UTF-8">
 <title>Mini Spotify</title>
 <style>
-    body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #1DB954, #191414);
-        color: white;
-        text-align: center;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    h1 {
-        margin-top: 40px;
-        font-size: 3rem;
-        letter-spacing: 2px;
-    }
-    input[type=file] {
-        margin-top: 20px;
-        padding: 10px;
-        border-radius: 8px;
-        border: none;
-        font-size: 16px;
-    }
-    button {
-        margin-left: 10px;
-        padding: 10px 25px;
-        background-color: #1DB954;
-        color: white;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: 0.3s;
-    }
-    button:hover {
-        background-color: #1ed760;
-    }
-    #songList {
-        list-style: none;
-        padding: 0;
-        margin-top: 40px;
-        width: 80%;
-        max-width: 700px;
-    }
-    li {
-        margin: 20px 0;
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    audio {
-        width: 90%;
-        outline: none;
-        margin-bottom: 10px;
-    }
-    a {
-        color: #1DB954;
-        text-decoration: none;
-        font-weight: bold;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1DB954, #191414);
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h1 {
+    margin-top: 40px;
+    font-size: 3rem;
+    letter-spacing: 2px;
+}
+input[type=file] {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+button {
+    margin-left: 10px;
+    padding: 10px 25px;
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+button:hover {
+    background-color: #1ed760;
+}
+#songList {
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+    width: 80%;
+    max-width: 700px;
+}
+li {
+    margin: 20px 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+audio {
+    width: 90%;
+    outline: none;
+    margin-bottom: 10px;
+}
+a {
+    color: #1DB954;
+    text-decoration: none;
+    font-weight: bold;
+}
+a:hover {
+    text-decoration: underline;
+}
 </style>
 </head>
 <body>
@@ -82,7 +82,8 @@
 <ul id="songList"></ul>
 
 <script>
-    const RENDER_URL = "https://mini-spotify1.onrender.com"; // Replace with your live Render URL
+    // 🔹 Replace this with your Render URL
+    const RENDER_URL = "https://mini-spotify1.onrender.com";
 
     async function uploadSong() {
         const fileInput = document.getElementById("fileInput");
@@ -100,16 +101,18 @@
                 body: formData
             });
 
-            // Check if JSON
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                const text = await response.text();
-                console.error("Received HTML instead of JSON:", text);
+            const text = await response.text();
+
+            // Check if response is JSON
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch {
+                console.error("Server returned HTML instead of JSON:", text);
                 alert("❌ Upload failed: Server returned HTML instead of JSON");
                 return;
             }
 
-            const data = await response.json();
             if (!response.ok) {
                 alert("❌ " + data.error);
                 return;
