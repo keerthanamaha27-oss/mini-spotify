@@ -5,11 +5,10 @@
   <title>Mini Spotify – Upload Song</title>
 </head>
 <body>
-  <h1>🎵 Mini Spotify Upload</h1>
+  <h1>🎵 Mini Spotify Upload (No Admin)</h1>
 
   <input type="file" id="fileInput" />
-  <input type="password" id="adminPassword" placeholder="Enter admin password" />
-  <button onclick="uploadSong()">Upload</button>
+  <button onclick="uploadSong()">Upload Song</button>
 
   <h2>Uploaded Songs</h2>
   <ul id="songList"></ul>
@@ -17,7 +16,6 @@
   <script>
     async function uploadSong() {
       const fileInput = document.getElementById("fileInput");
-      const password = document.getElementById("adminPassword").value;
 
       if (!fileInput.files[0]) {
         alert("Please select a file first!");
@@ -28,11 +26,11 @@
       formData.append("file", fileInput.files[0]);
 
       try {
-        const response = await fetch("/upload", {
-          method: "POST",
-          headers: { "admin-password": password },
-          body: formData,
+        const response = await fetch('https://mini-spotify1.onrender.com/upload', {
+          method: 'POST',
+          body: formData
         });
+
         const data = await response.json();
 
         if (!response.ok) {
