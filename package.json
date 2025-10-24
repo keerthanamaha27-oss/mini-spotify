@@ -1,18 +1,16 @@
 {
   "name": "mini-spotify",
   "version": "1.0.0",
+  "description": "Mini Spotify using Node.js, Express, Cloudinary",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "cloudinary": "^1.41.3",
+    "cloudinary": "^1.36.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "express": "^4.21.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "multer": "^1.4.5-lts.1"
-  },
-  "engines": {
-    "node": "20.x"
   }
 }
