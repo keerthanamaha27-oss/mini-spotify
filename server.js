@@ -1,68 +1,51 @@
-const dotenv = require('dotenv');
-dotenv.config({ path: './.env' });
-
-const express = require('express');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const path = require('path');
+// server.js
+const express = require("express");
+const multer = require("multer");
+const cors = require("cors");
+const cloudinary = require("cloudinary").v2;
+const path = require("path");
+require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "miniSpotify123";
-
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({ origin: "*" }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
+// Cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
 });
 
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith('audio/')) {
-      return cb(new Error('Only audio files are allowed!'));
-    }
-    cb(null, true);
-  }
+// Multer memory storage
+const upload = multer({ storage: multer.memoryStorage() });
+
+// Admin password
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "secret123";
+
+// Serve frontend
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-let songs = [];
-
-app.post('/upload', upload.single('song'), (req, res) => {
-  const { password } = req.body;
+// Upload route
+app.post("/upload", upload.single("file"), (req, res) => {
+  const password = req.headers["admin-password"];
   if (password !== ADMIN_PASSWORD) {
-    return res.status(403).json({ error: "Unauthorized: Admin only" });
+    return res.status(401).json({ error: "Unauthorized: Invalid admin password" });
   }
-
-  const file = req.file;
-  if (!file) return res.status(400).json({ error: "No file uploaded" });
-
   const stream = cloudinary.uploader.upload_stream(
-    { resource_type: 'video', folder: 'songs' },
+    { resource_type: "video" },
     (error, result) => {
-      if (error) return res.status(500).json({ error: error.message });
-
-      songs.unshift({
-        name: file.originalname,
-        size: (file.size / 1024).toFixed(2) + ' KB',
-        url: result.secure_url,
-        date: new Date().toLocaleString()
-      });
-
-      res.json({ songs });
+      if (error) return res.status(500).json({ error });
+      res.json(result);
     }
   );
-
-  stream.end(file.buffer);
+  stream.end(req.file.buffer);
 });
 
-app.get('/songs', (req, res) => {
-  res.json({ songs });
-});
+// Health check
+app.get("/health", (req, res) => res.send("Mini Spotify backend running!"));
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mini Spotify – Upload Song</title>
+</head>
+<body>
+  <h1>🎵 Mini Spotify Upload</h1>
+
+  <input type="file" id="fileInput" />
+  <input type="password" id="adminPassword" placeholder="Enter admin password" />
+  <button onclick="uploadSong()">Upload</button>
+
+  <h2>Uploaded Songs</h2>
+  <ul id="songList"></ul>
+
+  <script>
+    async function uploadSong() {
+      const fileInput = document.getElementById("fileInput");
+      const password = document.getElementById("adminPassword").value;
+
+      if (!fileInput.files[0]) {
+        alert("Please select a file first!");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      try {
+        const response = await fetch("/upload", {
+          method: "POST",
+          headers: { "admin-password": password },
+          body: formData,
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert("❌ " + data.error);
+          return;
+        }
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <audio controls src="${data.secure_url}"></audio>
+          <br />
+          <a href="${data.secure_url}" target="_blank">${fileInput.files[0].name}</a>
+        `;
+        document.getElementById("songList").appendChild(li);
+
+        alert("✅ Upload successful!");
+      } catch (err) {
+        alert("Upload failed: " + err.message);
+      }
+    }
+  </script>
+</body>
+</html>
